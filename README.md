@@ -24,7 +24,7 @@ It's very straightforward
  </pre>
  
 ## Examples
-### Default semicolon separator ';'
+- Default semicolon separator ';'
 <pre>
 $ cat semicolon-delimited-file
 a;b;c
@@ -35,7 +35,7 @@ $ ./gollie-mask.sh -f semicollon-delimited-file
 [   { "a" : "1","b" : "2","c" : "3" },{ "a" : "4","b" : "5","c" : "6" }   ]
 </pre>
 
-### Using a file delimited by commas ',' as separator
+- Using a file delimited by commas ',' as separator
 <pre>
 $ cat commas-delimited-file
 a,b,c
