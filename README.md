@@ -50,7 +50,7 @@ $ ./gollie-mask.sh -f commas-delimited-file -d,
 
 - First line of the file is taken as header and used as JSON fields
 - There is a very basic check-up for file format. It takes first line and count its columns, if remaining lines differ from it, file is considered malformed.
-- Output is a unformatted JSON, you can pipe it to <pre>python -m json.tool</pre> to get a **RFC 8259 JSON**, like
+- Output is a unformatted JSON, you can pipe it to _python -m json.tool_ to get a **RFC 8259 JSON**, like
 
 <pre>
 $ ./gollie-mask.sh -f semicollon-delimited-file | python -m json.tool
