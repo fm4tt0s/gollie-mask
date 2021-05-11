@@ -46,6 +46,17 @@ $ ./gollie-mask.sh -f commas-delimited-file -d,
 [   { "a" : "1","b" : "2","c" : "3" },{ "a" : "4","b" : "5","c" : "6" }   ]
 </pre>
 
+- Anything of those thru stdin
+<pre>
+$ cat semicolon-delimited-file | ./gollie-mask.sh 
+[   { "a" : "1","b" : "2","c" : "3" },{ "a" : "4","b" : "5","c" : "6" }   ]
+</pre>
+
+<pre>
+$ ./gollie-mask.sh < semicolon-delimited-file
+[   { "a" : "1","b" : "2","c" : "3" },{ "a" : "4","b" : "5","c" : "6" }   ]
+</pre>
+
 ## Remarks
 
 - First line of the file is taken as header and used as JSON fields
