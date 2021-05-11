@@ -2,13 +2,15 @@
 #
 # author    : felipe mattos
 # date      : May-10-2021
-# version   : 0.1
+# version   : 0.2
 #
 # purpose   : convert csv (or other delimited) file into json
 # remarks   : na
 # require   : bash and common sense
 #
 # changelog
+#           0.1 initial
+#           0.2 added support for getting input via stdin
 #
 
 # ------ first things, first ------
@@ -17,6 +19,9 @@
 if [[ -z "${BASH}" ]] || [[ "${BASH_VERSINFO[0]}" -lt 3 ]]; then
     echo "Aaaarrrrgggghhhh Ye Neeeeeed BAAAAASSSSH (bash 3+ required)" >&2 && exit 1
 fi
+
+# set default delimiter
+_delimiter=";"
 
 function usage() {
     # what: if it ran you need help. shows script usage.
@@ -90,16 +95,27 @@ function macheteit() {
     echo "${_json_file}"
 }
 
-_delimiter=";"
 # parse command line
-[[ "${#}" -eq 0 ]] && usage
+# check if stdin was passed
+if [[ ! -t 0 ]]; then
+    # make a temp file to be used
+    _tmp_file="/tmp/gollie.temp.$$$$$$"
+    _stdin="true"
+    while IFS= read -r stdLINE; do
+        echo "${stdLINE}"
+    done < /dev/stdin > "${_tmp_file}"
+    _file="${_tmp_file}"
+fi
+
+# parse everything else from command line
+[[ "${#}" -eq 0 && "${_stdin}" != "true" ]] && usage
 while getopts ":d:f:" _cmd_line; do
     case "${_cmd_line}" in
         d) 
             _delimiter="${OPTARG}"
             ! [[ "${_delimiter}" =~ ^(,|;)$ ]] && echo "Ye Run A Rig, Lessie! Aint no piece for ${_delimiter} as delimiter" && exit 1
             ;;
-        f) 
+        f)
             _file="${OPTARG}"
             [[ -z "${_file}" ]] && usage
             ;;
@@ -114,8 +130,13 @@ done
 
 # validate the file and transform it
 if ! filecheck; then
+    [[ -f "${_tmp_file}" ]] && echo "Avast Ye Mate! Yer INPUT is barnacle-covered and malformed." && exit 1
     echo "Avast Ye Mate! ${_file} is barnacle-covered and malformed."
     exit 1
 else
     macheteit
 fi
+
+# get rid of any temp left and die
+rm -f "${_tmp_file}"
+exit 0
